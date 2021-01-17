@@ -3,10 +3,12 @@
 #include <iostream>
 #include <GL/glew.h>
 
+
 Mesh::Mesh(float* vertices, unsigned int sizeOfArray)
 {
     Init(vertices, sizeOfArray);
 }
+
 
 Mesh::~Mesh()
 {
@@ -19,7 +21,6 @@ void Mesh::Init(float* vertices, unsigned int sizeOfVertices)
 
     // allocate memory on GPU & copy the data into it (VBO)
     // unsigned int vbo, vao;
-
     // set up vertex array obj (vao)
     glGenVertexArrays(1, &vertexArrayObj);
     glBindVertexArray(vertexArrayObj);
@@ -27,6 +28,7 @@ void Mesh::Init(float* vertices, unsigned int sizeOfVertices)
     // set up vertex buffer obj (vbo) (will be 'inside' vao)
     glGenBuffers(1, &vertexBufferObj);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObj);
+
     glBufferData(GL_ARRAY_BUFFER, sizeOfVertices, vertices, GL_STATIC_DRAW);
     // as of now, vertex data is in GPU memory handled by vbo object
 
@@ -45,9 +47,11 @@ void Mesh::Init(float* vertices, unsigned int sizeOfVertices)
 }
 
 
+
 void Mesh::Draw()
 {
     glBindVertexArray(vertexArrayObj);
+
     glDrawArrays(GL_LINES, 0, 2);
     glDrawArrays(GL_LINES, 2, 2); // vertical line
 
@@ -59,5 +63,6 @@ void Mesh::Draw()
 //    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
+
 
 

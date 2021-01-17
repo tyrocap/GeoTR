@@ -16,7 +16,7 @@ struct ShaderProgramSource
 
 static ShaderProgramSource ParseShader(const std::string& filePath);
 static unsigned int CreateShader(const std::string& text, unsigned int shaderType);
-// TODO: add error checking function
+static void CheckShaderError(unsigned int shader, unsigned int flag, bool isProgram, const std::string& errorMessage);
 
 Shader::Shader(const std::string& filePath)
 {
@@ -40,10 +40,10 @@ Shader::Shader(const std::string& filePath)
     // glBindAttribLocation(programId, ...);
 
     glLinkProgram(programId);
-    // TODO: Error checking
+    CheckShaderError(programId, GL_LINK_STATUS, true, "Error: Program linking failed: ");
 
     glValidateProgram(programId);
-    // TODO: Error checking
+    CheckShaderError(programId, GL_VALIDATE_STATUS, true, "Error: Program is invalid: ");
 
 }
 
@@ -60,6 +60,7 @@ Shader::~Shader()
 void Shader::Bind()
 {
     glUseProgram(programId);
+    unsigned int attLoc = glGetAttribLocation(programId, "glFragColor");
 }
 
 static unsigned int CreateShader(const std::string& source, unsigned int shaderType)
@@ -86,6 +87,7 @@ static ShaderProgramSource ParseShader(const std::string& filePath)
     std::stringstream ss[2];
     ShaderType type = ShaderType::NONE;
 
+
     while (getline(stream, line))
     {
         if (line.find("#shader") != std::string::npos)
@@ -106,4 +108,26 @@ static ShaderProgramSource ParseShader(const std::string& filePath)
     }
 
     return { ss[0].str(), ss[1].str() };
+}
+
+
+void CheckShaderError(unsigned int shader, unsigned int flag, bool isProgram, const std::string& errorMessage)
+{
+    GLint success = 0;
+    GLchar error[1024] = { 0 };
+
+    if(isProgram)
+        glGetProgramiv(shader, flag, &success);
+    else
+        glGetShaderiv(shader, flag, &success);
+
+    if(success == GL_FALSE)
+    {
+        if(isProgram)
+            glGetProgramInfoLog(shader, sizeof(error), NULL, error);
+        else
+            glGetShaderInfoLog(shader, sizeof(error), NULL, error);
+
+        std::cerr << errorMessage << ": '" << error << "'" << std::endl;
+    }
 }

@@ -3,14 +3,16 @@
 #include <Display.h>
 #include <Shader.h>
 #include <Mesh.h>
+#include <Vertices.h>
+#include <glm/glm.hpp>
 
 #define WIDTH 800
 #define HEIGHT 600
 
-using namespace std;
 
 int main()
 {
+
     Display display(900, 800, "Hello World");
     Shader shader("./res/basic.shader");
 
@@ -19,14 +21,15 @@ int main()
          0.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f,
          1.0f,  0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
          -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-         -0.3f, -0.3f, 0.0f, 1.0f, 0.0f, 0.0f,
-         0.3f,  -0.3f, 0.0f, 1.0f, 0.0f, 0.0f,
-         0.0f,  0.3f, 0.0f, 1.0f, 0.0f, 0.0f,
-         -0.3f, -0.3f, 0.0f, 1.0f, 0.0f, 0.0f,
-         0.0f, 0.5f, 0.0f, 0.5f, 1.0f, 0.0f,
-         -0.1f,-0.1f, 0.0f, 0.5f, 1.0f, 0.0f,
-         0.5f, 0.0f, 0.0f, 0.5f, 1.0f, 0.0f,
+         -0.3f, -0.3f, 0.0f, 0.5f, 0.5f, 1.0f,
+         0.3f,  -0.3f, 0.0f, 0.5f, 0.5f, 1.0f,
+         0.0f,  0.3f, 0.0f, 0.5f, 0.5f, 1.0f,
+         -0.3f, -0.3f, 0.0f, 0.5f, 0.5f, 1.0f,
+         0.0f, 0.5f, 0.0f, 0.5f, 1.0f, 1.0f,
+         -0.1f,-0.1f, 0.0f, 0.5f, 1.0f, 1.0f,
+         0.5f, 0.0f, 0.0f, 0.5f, 1.0f, 1.0f,
     };
+
     Mesh mesh(vertices, sizeof(vertices));
 
     while (!display.isClosed())
@@ -36,8 +39,6 @@ int main()
 
         glLineWidth(2);
         glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-
-
 
         mesh.Draw();
         display.Update();

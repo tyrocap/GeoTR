@@ -1,14 +1,16 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include <vector>
 
 class Mesh
 {
     public:
-        Mesh(float* vertices, unsigned int sizeOfVertices);
+
+        Mesh(float* vertices, unsigned int sizeOfArray);
+
 
         void Draw();
-
 
         virtual ~Mesh();
 
@@ -19,6 +21,9 @@ class Mesh
         unsigned int vertexArrayObj;
         unsigned int vertexBufferObj;
 
+
 };
+
+
 
 #endif // MESH_H
